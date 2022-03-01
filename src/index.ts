@@ -239,7 +239,7 @@ const convertFile = async (file: string, fType: string, fURL) => {
         await fs.writeFileSync(`${outPath}/key.vgmk`, encrypted, { encoding: 'binary' });
         console.log('Encrypt key file done');
         // upload converted to s3 instant code
-        await removeOldConverted(upConvertedPath);
+        // await removeOldConverted(upConvertedPath);
         await upConverted(outPath, upConvertedPath);
         await fs.rmdirSync(outPath, { recursive: true });
         console.log('removed converted folder');
