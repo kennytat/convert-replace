@@ -15,11 +15,11 @@ queue.on('idle', () => {
   console.log(`Queue is idle.  Size: ${queue.size}  Pending: ${queue.pending}`);
 });
 
-
 // edit info here
-const prefix = '/home/vgm/Desktop';
-const startPoint = 0; 
-const endPoint = 67;
+// const prefix = '/home/vgm/Desktop';
+const args = process.argv.slice(2)
+const startPoint = parseInt(args[0]); 
+const endPoint = parseInt(args[1]);;
 const fileType = 'video' // 'audio';
 // const itemSingle = 'videoSingle'; // 'audioSingle'
 let VGM;
@@ -30,16 +30,19 @@ if (fileType === 'video') {
   VGM = 'VGMA';
   queue.concurrency = 20;
 }
-const txtPath = `${prefix}/database/${VGM}.txt`;
-const renamedFolder = `${prefix}/database/renamed/${VGM}/01-Bài Giảng/Mục sư Nguyễn Thỉ`; // /06-Phim
-const originalTemp = `${prefix}/database/tmp`;
-const apiPath = `${prefix}/database/API`;
-const localOutPath = `${prefix}/database/converted`;
+
+const txtPath = `${__dirname}/database/${fileType}Single.txt`;
+const originalTemp = `${__dirname}/database/tmp`;
+const apiPath = `${__dirname}/database/API-convert/items/single`;
+const localOutPath = `${__dirname}/database/converted`;
+
+// const renamedFolder = `${prefix}/database/renamed/${VGM}/01-Bài Giảng/Mục sư Nguyễn Thỉ/Năm 2017`; // /06-Phim
 // const mountedEncrypted = `${prefix}/database/encrypted`;
-const mountedOrigin = `${prefix}/database/origin`;
-const gateway = `https://cdn.vgm.tv/encrypted/${VGM}`;
-const originalPath = 'VGM-Origin:vgmorigin/origin'; // from onedrive: 'VGM-Movies:' --- from origin: 'VGM-Origin:vgmorigin/origin';
-const warehousePath = 'VGM-Origin:vgmorigin/warehouse';
+// const mountedOrigin = `${prefix}/database/origin`;
+// const gateway = `https://cdn.vgm.tv/encrypted/${VGM}`;
+// const warehousePath = 'VGM-Origin:vgmorigin/warehouse';
+
+const originalPath = 'VGM-Origin:vgmorigin/warehouse'; // from onedrive: 'VGM-Movies:' --- from origin: 'VGM-Origin:vgmorigin/origin';
 const convertedPath = 'VGM-Converted:vgmencrypted/encrypted';
 // edit info end
 
@@ -138,14 +141,14 @@ const checkMP4 = async (tmpPath, fType) => {
     try {
       info = await execSync(`ffprobe -v quiet -print_format json -show_streams "${tmpPath}"`, { encoding: 'utf8' });
     } catch (error) {
-      await fs.appendFileSync(`${prefix}/database/${fileType}-converted-count.txt`, `\n${tmpPath} --fileError cannot read`);
+      await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${tmpPath} --fileError cannot read`);
       resolve(false);
     }
     if (fType === 'video') {
       const jsonInfo = JSON.parse(info);
       const displayRatio = (jsonInfo.streams[0].width / jsonInfo.streams[0].height).toFixed(2);
       console.log(jsonInfo.streams[0].codec_long_name, displayRatio);
-      await fs.appendFileSync(`${prefix}/database/${fileType}-converted-count.txt`, `\n${tmpPath} ${jsonInfo.streams[0].codec_long_name} ${displayRatio}`);
+      await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${tmpPath} ${jsonInfo.streams[0].codec_long_name} ${displayRatio}`);
       if (jsonInfo.streams[0].codec_long_name === 'MPEG-4 part 2' || displayRatio === (4 / 3).toFixed(2)) {
         const tmpName = path.parse(tmpPath).name;
         const mp4Tmp = tmpPath.replace(tmpName, `${tmpName}1`);
@@ -162,7 +165,7 @@ const checkMP4 = async (tmpPath, fType) => {
         });
         mp4.on('close', async (code) => {
           console.log(`Converted to mp4 done with code:`, code);
-          await fs.unlinkSync(mp4Tmp);
+          // await fs.unlinkSync(mp4Tmp);
           resolve(true);
         })
       } else {
@@ -176,36 +179,36 @@ const checkMP4 = async (tmpPath, fType) => {
   });
 }
 
-const convertFile = async (file: string, vName: string, fType: string, pItem, argOutPath) => {
-  console.log('convertFile args:', file, vName, fType, argOutPath);
+const convertFile = async (file: string, fType: string, fURL) => {
+  console.log('convertFile args:', file, fType, fURL);
 
   return new Promise((resolve) => {
     let fileInfo: FileInfo = { pid: '', location: '', name: '', size: 0, duration: '', qm: '', url: '', hash: '', isVideo: false, dblevel: 0 };
-    let metaData: any = [];
+    // let metaData: any = [];
     // get file Info
-    metaData = execSync(`ffprobe -v quiet -select_streams v:0 -show_entries format=filename,duration,size,stream_index:stream=avg_frame_rate -of default=noprint_wrappers=1 "${file}"`, { encoding: "utf8" }).split('\n');
+    // metaData = execSync(`ffprobe -v quiet -select_streams v:0 -show_entries format=filename,duration,size,stream_index:stream=avg_frame_rate -of default=noprint_wrappers=1 "${file}"`, { encoding: "utf8" }).split('\n');
     // Then run ffmpeg to start convert
-    const duration_stat: string = metaData.filter(name => name.includes("duration=")).toString();
-    const duration: number = parseFloat(duration_stat.replace(/duration=/g, ''));
-    const minutes: number = Math.floor(duration / 60);
-    fileInfo.duration = `${minutes}:${Math.floor(duration) - (minutes * 60)}`;
-    fileInfo.size = parseInt(metaData.filter(name => name.includes("size=")).toString().replace('size=', ''));
+    // const duration_stat: string = metaData.filter(name => name.includes("duration=")).toString();
+    // const duration: number = parseFloat(duration_stat.replace(/duration=/g, ''));
+    // const minutes: number = Math.floor(duration / 60);
+    // fileInfo.duration = `${minutes}:${Math.floor(duration) - (minutes * 60)}`;
+    // fileInfo.size = parseInt(metaData.filter(name => name.includes("size=")).toString().replace('size=', ''));
 
     // const nameExtPath = files[index].match(/[\w\-\_\(\)\s]+\.[\w\S]{3,4}$/gi).toString();
     // fileInfo.name = nameExtPath.replace(/\.\w+/g, '');
     // fileInfo.name = path.parse(file).name;
 
     // read file.ini for name (instant code)
-    fileInfo.name = vName;
+    // fileInfo.name = vName;
     // process filename
-    const nonVietnamese = nonAccentVietnamese(vName);
-    fileInfo.url = `${pItem.url}.${nonVietnamese.toLowerCase().replace(/[\W\_]/g, '-').replace(/-+-/g, "-")}`;
-    fileInfo.location = `${pItem.location}/${nonVietnamese.replace(/\s/g, '')}`;
-    const outPath = `${argOutPath}/${nonVietnamese.replace(/\s/g, '')}`;
-    fileInfo.isVideo = pItem.isVideo;
-    fileInfo.pid = pItem.id;
-    fileInfo.dblevel = pItem.dblevel + 1;
-    console.log(fileInfo, 'start converting ffmpeg');
+    // const nonVietnamese = nonAccentVietnamese(vName);
+    // fileInfo.url = `${pItem.url}.${nonVietnamese.toLowerCase().replace(/[\W\_]/g, '-').replace(/-+-/g, "-")}`;
+    // fileInfo.location = `${pItem.location}/${nonVietnamese.replace(/\s/g, '')}`;
+    const outPath = `${localOutPath}/${fURL}`;
+    // fileInfo.isVideo = pItem.isVideo;
+    // fileInfo.pid = pItem.id;
+    // fileInfo.dblevel = pItem.dblevel + 1;
+    // console.log(fileInfo, 'start converting ffmpeg');
     console.log(`'bash', ['ffmpeg-exec.sh', "${file}", "${outPath}", ${fType}]`);
     const conversion = spawn('bash', ['ffmpeg-exec.sh', `"${file}"`, `"${outPath}"`, fType]);
 
@@ -223,15 +226,8 @@ const convertFile = async (file: string, vName: string, fType: string, pItem, ar
       try {
         // get iv info
         const reader = new M3U8FileParser();
-        let keyPath: string = fType === 'audio' ? `${outPath}/128p.m3u8` : fType === 'video' ? `${outPath}/480p.m3u8` : '';
-        let upConvertedPath: string = fType === 'audio' ? `/VGMA/${fileInfo.url.replace(/\./g, '\/')}` :  fType === 'video' ? `/VGMV/${fileInfo.url.replace(/\./g, '\/')}` : '';
-        // if (fType === 'audio') {
-        //   keyPath = `${outPath}/128p.m3u8`;
-        //   upConvertedPath = `/VGMA/${fileInfo.url.replace(/\./g, '\/')}`;
-        // } else if (fType === 'video' || fType === 'videoSilence') {
-        //   keyPath = `${outPath}/480p.m3u8`;
-        //   upConvertedPath = `/VGMV/${fileInfo.url.replace(/\./g, '\/')}`;
-        // }
+        let keyPath: string = fType === 'audio' ? `${outPath}/128p.m3u8` :`${outPath}/480p.m3u8`;
+        let upConvertedPath: string = fType === 'audio' ? `/VGMA/${fURL.replace(/\./g, '\/')}` :  `/VGMV/${fURL.replace(/\./g, '\/')}`;
         const segment = await fs.readFileSync(keyPath, { encoding: 'utf-8' });
         reader.read(segment);
         const m3u8 = reader.getResult();
@@ -274,13 +270,13 @@ const convertFile = async (file: string, vName: string, fType: string, pItem, ar
       //     exec(`curl --silent --head --fail ${url}`, async (error, stdout, stderr) => {
       //       if (error) {
       //         console.log('file exist:', false);
-      //         await fs.appendFileSync(`${prefix}/database/${fileType}-converted-count.txt`, `\n${url} --fileMissing`);
+      //         await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${url} --fileMissing`);
       //         resolve(false)
       //       };
       //       if (stderr) console.log('stderr', stderr);
       //       if (stdout) {
       //         console.log('file exist:', true);
-      //         await fs.appendFileSync(`${prefix}/database/${fileType}-converted-count.txt`, `\n${url} --fileExist`);
+      //         await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${url} --fileExist`);
       //         resolve(true);
       //       };
       //     });
@@ -325,40 +321,14 @@ const convertFile = async (file: string, vName: string, fType: string, pItem, ar
 const processFile = async (file: string, fType: string) => {
       return new Promise(async (resolve) => {
 
-        const originalFile = file.replace('.ini', '');
-        const ext = path.parse(originalFile).ext;
-        const fileIni = execSync(`find '${renamedFolder}' -type f -name "${path.basename(file)}"`, { encoding: "utf8" }).split('\n');
-        console.log('fileIni', fileIni);
-        if (fileIni[0]) {
-          const fileContent = fs.readFileSync(fileIni[0], { encoding: 'utf8' });
-          const fileName = `${fileContent.split('|')[1]}`;
-          let re;
-          if (fType === 'video') {
-            re = /^.*VGMV\//;
-          } else if (fType === 'audio') {
-            re = /^.*VGMA\//;
-          }
-          const nonVietnamese = nonAccentVietnamese(path.dirname(fileIni[0]).replace(re, ''));
-          console.log('nonVietnamese', nonVietnamese);
-          const pUrl = nonVietnamese.toLowerCase().replace(/\./g, '-').replace(/\//g, '\.').replace(/[\s\_\+\=\*\>\<\,\'\"\;\:\!\@\#\$\%\^\&\*\(\)]/g, '-');
-          // await checkFileExists(fileName, pUrl, fType);
-          console.log('pURL', pUrl);
-          const pAPI = execSync(`find '${apiPath}/topics/single' -type f -name "${pUrl}.json"`, { encoding: "utf8" }).split('\n');
-          console.log('pAPI', pAPI);
-
-          if (pAPI && pAPI[0]) {
-            const pContent = fs.readFileSync(pAPI[0], { encoding: 'utf8' });
-            const pItem = JSON.parse(pContent);
-            // check if file exist
-            // const fileExist = await checkFileExists(fileName, pItem.url, fType);
-            // if (!fileExist) {
+      const nonVietnamese = nonAccentVietnamese(file);
+        const fAPI = `${nonVietnamese.replace(/.*VGMV\//,'').toLowerCase().replace(/\//g, '.').replace(/(?!\.)[\W\_]/g, '-').replace(/-+-/g, "-").replace(/\.mp4/,'')}`;
+        const fileExist = fs.existsSync(`${apiPath}/${fAPI}.json`);
+          if (fileExist) {
+            const originalFile = file;
             await downloadLocal(originalFile);
             const localOriginPath = `${originalTemp}/${path.parse(originalFile).base}`;
             if (fs.existsSync(localOriginPath)) {
-              // // // extract thumbnail instance code start
-              // await extractThumb(localOriginPath, fileName, pItem, localOutPath);
-              // // // extract thumbnail instance code end
-
               // check and convert mp4 to m3u8
               const fileOk = await checkMP4(localOriginPath, fType); // audio dont need check MP4
               if (fileOk) {
@@ -366,59 +336,46 @@ const processFile = async (file: string, fType: string) => {
                 let fStat: string;
                 const checkNonSilence = await execSync(`ffmpeg -i "${localOriginPath}" 2>&1 | grep Audio | awk '{print $0}' | tr -d ,`, { encoding: 'utf8' });
                 if (checkNonSilence) fStat = fType; else fStat = 'videoSilence';
-                await convertFile(localOriginPath, fileName, fStat, pItem, localOutPath);
-
-                // // rename and up vietnamese warehouse
-                const renamedVietnamese = `${originalTemp}/${fileName}${ext}`;
-                if (!fs.existsSync(renamedVietnamese)) {
-                  await execSync(`mv "${localOriginPath}" "${renamedVietnamese}"`);
-                }
-                // const warehouseDir = `${path.dirname(fileIni[0]).replace(/^.*renamed/, '')}`;
-                // console.log('uploading Origin', originalFile, warehouseDir);
-                // await upWarehouse(renamedVietnamese, warehouseDir);
-
+                await convertFile(localOriginPath, fStat, fAPI);
                 // remove downloaded file when done
-                await fs.unlinkSync(renamedVietnamese);
-                await fs.unlinkSync(fileIni[0]);
-                resolve('done');
+                await fs.unlinkSync(localOriginPath);
+                resolve(fAPI);
               } else {
-                await fs.appendFileSync(`${prefix}/database/${fileType}-converted-count.txt`, `\n ${fileIni[0]} broken`);
-                await fs.unlinkSync(fileIni[0]);
+                await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\nbroken|${file}`);
                 resolve('done');
               }
+            } else {
+              resolve(false);
             }
-            // } else {
-            //   await fs.unlinkSync(fileIni[0]);
-            //   resolve('done');
-            // }
-
-          }
-          resolve('done');
-        } else {
-          await fs.appendFileSync(`${prefix}/database/${fileType}-converted-count.txt`, `\n ${fileIni[0]} --err no pAPI found`);
-          resolve('done');
-        }
+            } else {
+                resolve(false);
+            }
       })
     };
 
+
 const main = async () => {
   try {
-      // start script here
+   // start script here
       const raw = fs.readFileSync(txtPath, { encoding: 'utf8' });
       if (raw) {
         let list = raw.split('\n');
         list.pop();
-        // list.reverse();
         console.log('total files', list.length);
-        for (let i = startPoint; i < list.length; i++) { // list.length or endPoint
+        const listLength = endPoint ? endPoint : list.length;
+        for (let i = startPoint; i < listLength; i++) { // list.length or endPoint
           (async () => {
             queue.add(async () => {
-              if (!list[i].includes('Info.ini')) {
-                await processFile(list[i], fileType);
-                await fs.appendFileSync(`${prefix}/database/${fileType}-converted-count.txt`, `\n${i}`);
-                console.log('processed files', i);
+              const result = await processFile(list[i], fileType);
+              var today = new Date();
+              var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+              var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+              var dateTime = date+'-'+time;
+            //   console.log('processed files', i, dateTime);
+              if (result) {
+                await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${i}|${result}|${dateTime}`);
               } else {
-                await fs.appendFileSync(`${prefix}/database/${fileType}-converted-count.txt`, `\n${i} --skip Info.ini`);
+                await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${i}|notfound|${list[i]}`);
               }
             });
           })();
