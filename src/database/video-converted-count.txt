@@ -88,3 +88,5 @@
 141|01-bai-giang.hoc-theo-chu-de.03-xac-tin-niem-tin.01-toi-co-that-la-con-cua-chua-|2022-3-4-13:49:24
 /home/vgm/Projects/convert-replace/src/database/tmp/02-Tôi có thật là con của Chúa ?.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
 /home/vgm/Projects/convert-replace/src/database/tmp/02-Tôi có thật là con của Chúa ?.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+142|notfound|/VGMV/01-Bài Giảng/Học Theo Chủ Đề/03-Xác Tín Niềm Tin/02-Tôi có thật là con của Chúa ?.mp4
+143|notfound|/VGMV/01-Bài Giảng/Học Theo Chủ Đề/03-Xác Tín Niềm Tin/03-Tôi có thật là con của Chúa ?.mp4

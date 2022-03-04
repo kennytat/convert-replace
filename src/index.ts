@@ -19,8 +19,9 @@ queue.on('idle', () => {
 // const prefix = '/home/vgm/Desktop';
 const args = process.argv.slice(2)
 const hardware = args[0];
-const startPoint = parseInt(args[1]);
-const endPoint = parseInt(args[2]);
+const startPoint = parseInt(args[2]);
+const endPoint = parseInt(args[3]);
+const concurrency = parseInt(args[1]);
 const fileType = 'video' // 'audio';
 let gpuIndex = 0;
 const gpuNum = 7;
@@ -28,7 +29,7 @@ const gpuNum = 7;
 let VGM;
 if (fileType === 'video') {
   VGM = 'VGMV';
-  queue.concurrency = 1;
+  queue.concurrency = concurrency || 1;
 } else if (fileType === 'audio') {
   VGM = 'VGMA';
   queue.concurrency = 20;
