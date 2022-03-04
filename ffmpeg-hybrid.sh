@@ -22,7 +22,7 @@ fi
 
 # Define convert function
 ffmpegVideoGPU() {
-	ffmpeg -v quiet -progress pipe:1 -stats_period 0.5 -vsync 0 -hwaccel cuvid -c:v h264_cuvid -i "${inPath}" \
+	ffmpeg -progress pipe:1 -stats_period 0.5 -vsync 0 -hwaccel cuvid -c:v h264_cuvid -i "${inPath}" \
 		-filter_complex \
 		"[0:v]split=3[v1][v2][v3]; \
 [v1]scale_npp=w=1920:h=1080:force_original_aspect_ratio=decrease[v1out]; \
@@ -48,8 +48,8 @@ ffmpegVideoGPU() {
 }
 
 ffmpegVideoCPU() {
-	ffmpeg -v quiet -progress pipe:1 -stats_period 0.5 -vsync 0 -i "${inPath}" \
-		-vf scale=w=640:h=360:force_original_aspect_ratio=decrease \
+	ffmpeg -progress pipe:1 -stats_period 0.5 -vsync 0 -i "${inPath}" \
+		-vf "scale=w=640:h=360:force_original_aspect_ratio=decrease" \
 		-c:v h264 -b:v "$rate360"K -maxrate "$rate360"K -bufsize "$buf360"K \
 		-c:a aac -b:a 96k -ac 2 \
 		-crf 28 \
@@ -103,8 +103,8 @@ mkdir -p "$outPath" && cd "$outPath" &&
 		ffmpegThumbnailGPU
 	else
 		mkdir -p "$outPath"/128p && ffmpegAudioCPU
-	fi
-rm file.keyinfo
+	fi &&
+	rm file.keyinfo
 # Timer end
 ((end = $(date +%s) - $start))
 echo "Total converted time: $(date -u -d @${end} +"%T")"

@@ -1,3 +1,90 @@
 
-/home/vgm/Projects/convert-replace/src/database/tmp/MSMPH_Chu Toàn Hay Không Chu Toàn Chức Vụ Chúa Giao.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
-0|01-bai-giang.cac-dien-gia.msmph-chu-toan-hay-khong-chu-toan-chuc-vu-chua-giao|2022-3-1-16:22:22
+
+/home/vgm/Projects/convert-replace/src/database/tmp/31-Tận Thế.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+100|01-bai-giang.cau-chuyen.31-tan-the|2022-3-1-18:34:20
+/home/vgm/Projects/convert-replace/src/database/tmp/01Tôi-Tạo Vật Của Chúa.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+101|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.01toi-tao-vat-cua-chua|2022-3-1-19:40:29
+/home/vgm/Projects/convert-replace/src/database/tmp/02Tôi-Tạo Vật Đau Khổ P1-Thắc Mắc.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+102|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.02toi-tao-vat-dau-kho-p1-thac-mac|2022-3-1-20:31:52
+/home/vgm/Projects/convert-replace/src/database/tmp/03Tôi-Tạo Vật Đau Khổ P2-Nguyên Nhân-Thái Độ.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+103|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.03toi-tao-vat-dau-kho-p2-nguyen-nhan-thai-do|2022-3-1-21:9:40
+/home/vgm/Projects/convert-replace/src/database/tmp/04Tôi-Tương Lai Tôi.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+104|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.04toi-tuong-lai-toi|2022-3-1-22:57:0
+/home/vgm/Projects/convert-replace/src/database/tmp/05Tôi-Món Quà Của Chúa Cha.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+105|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.05toi-mon-qua-cua-chua-cha|2022-3-1-23:58:20
+/home/vgm/Projects/convert-replace/src/database/tmp/06Tôi-Tác Phẩm Của Chúa Cứu Thế.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+106|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.06toi-tac-pham-cua-chua-cuu-the|2022-3-2-0:57:12
+/home/vgm/Projects/convert-replace/src/database/tmp/07Tôi-Người Sống Theo Thánh Linh.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+107|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.07toi-nguoi-song-theo-thanh-linh|2022-3-2-1:53:4
+/home/vgm/Projects/convert-replace/src/database/tmp/08Tôi-Người Sống Trong Tình Yêu.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+108|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.08toi-nguoi-song-trong-tinh-yeu|2022-3-2-3:8:53
+/home/vgm/Projects/convert-replace/src/database/tmp/09Tôi-Người Sống Để Yêu.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+109|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.09toi-nguoi-song-de-yeu|2022-3-2-4:12:14
+/home/vgm/Projects/convert-replace/src/database/tmp/10Tôi-Sứ Giả Của Chúa.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+110|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.10toi-su-gia-cua-chua|2022-3-2-5:17:5
+/home/vgm/Projects/convert-replace/src/database/tmp/11Tôi-Người Của Đức Chúa Trời.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+111|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.11toi-nguoi-cua-duc-chua-troi|2022-3-2-6:26:21
+/home/vgm/Projects/convert-replace/src/database/tmp/12Tôi-Người Lính Giỏi Của Chúa.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+112|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.12toi-nguoi-linh-gioi-cua-chua|2022-3-2-7:10:25
+/home/vgm/Projects/convert-replace/src/database/tmp/13Tôi-Của Lễ Hiến Dâng Cho Chúa.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+113|01-bai-giang.hoc-theo-chu-de.01-toi-la-ai-trai-tn2015.13toi-cua-le-hien-dang-cho-chua|2022-3-2-7:43:28
+/home/vgm/Projects/convert-replace/src/database/tmp/01-Cơ Đốc Giáo Nhàm Chán Sai Lạc Và Không Thích Hợp.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+114|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.01-co-doc-giao-nham-chan-sai-lac-va-khong-thich-hop|2022-3-2-8:36:9
+/home/vgm/Projects/convert-replace/src/database/tmp/02-Chúa Giê-xu Là Ai.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+115|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.02-chua-gie-xu-la-ai|2022-3-2-9:25:21
+/home/vgm/Projects/convert-replace/src/database/tmp/03-Tại Sao Chúa Giê-xu Chết.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+116|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.03-tai-sao-chua-gie-xu-chet|2022-3-2-10:29:56
+/home/vgm/Projects/convert-replace/src/database/tmp/04-Làm Thế Nào Để Xác Quyết Đức Tin Của Mình.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+117|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.04-lam-the-nao-de-xac-quyet-duc-tin-cua-minh|2022-3-2-11:27:31
+/home/vgm/Projects/convert-replace/src/database/tmp/05-Vì Sao Phải Đọc Kinh Thánh Và Nên Đọc Như Thế Nào.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+118|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.05-vi-sao-phai-doc-kinh-thanh-va-nen-doc-nhu-the-nao|2022-3-2-12:26:9
+/home/vgm/Projects/convert-replace/src/database/tmp/06-Ví Sao Phải Cầu Nguyện Và Cầu Nguyện Như Thế Nào.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+119|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.06-vi-sao-phai-cau-nguyen-va-cau-nguyen-nhu-the-nao|2022-3-2-13:28:37
+/home/vgm/Projects/convert-replace/src/database/tmp/07-Đức Chúa Trời Hướng Dẫn Chúng Ta Bằng Cách Nào.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+120|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.07-duc-chua-troi-huong-dan-chung-ta-bang-cach-nao|2022-3-2-14:27:24
+/home/vgm/Projects/convert-replace/src/database/tmp/08-Dức Thánh Linh Là Ai.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+121|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.08-duc-thanh-linh-la-ai|2022-3-2-15:21:30
+/home/vgm/Projects/convert-replace/src/database/tmp/09-Công Tác Của Đức Thánh Linh Là Gì.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+122|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.09-cong-tac-cua-duc-thanh-linh-la-gi|2022-3-2-16:15:19
+/home/vgm/Projects/convert-replace/src/database/tmp/10-Làm Thế Nào Để Được Đầy Dẫy Đức Thánh Linh.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+/home/vgm/Projects/convert-replace/src/database/tmp/10-Làm Thế Nào Để Được Đầy Dẫy Đức Thánh Linh.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+123|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.10-lam-the-nao-de-duoc-day-day-duc-thanh-linh|2022-3-3-9:36:26
+/home/vgm/Projects/convert-replace/src/database/tmp/11-Làm Thế Nào Để Chống lại Điều Ác.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+124|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.11-lam-the-nao-de-chong-lai-dieu-ac|2022-3-3-11:50:12
+/home/vgm/Projects/convert-replace/src/database/tmp/12-Vì Sao Chúng Ya Phải Nói Về Chúa Cho người Khác Và Nên Nói Như Thế Nào.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+125|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.12-vi-sao-chung-ya-phai-noi-ve-chua-cho-nguoi-khac-va-nen-noi-nhu-the-nao|2022-3-3-12:47:44
+/home/vgm/Projects/convert-replace/src/database/tmp/13-Ngày Nay Đức Chúa Trời Có Còn Chữa Bệnh Không.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+126|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.13-ngay-nay-duc-chua-troi-co-con-chua-benh-khong|2022-3-3-13:46:46
+/home/vgm/Projects/convert-replace/src/database/tmp/14-Hội Thánh Như Thế Nào.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+127|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.14-hoi-thanh-nhu-the-nao|2022-3-3-14:44:8
+/home/vgm/Projects/convert-replace/src/database/tmp/15-Làm Thế Nào Để Tận Dụng Tối Đa Cuộc Đời Còn lại Của Mình.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.33
+128|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-1.15-lam-the-nao-de-tan-dung-toi-da-cuoc-doi-con-lai-cua-minh|2022-3-3-15:45:30
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 01 Cuộc sống.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+129|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-01-cuoc-song|2022-3-3-16:10:13
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 02 Chúa Giê-xu.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+130|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-02-chua-gie-xu|2022-3-3-16:40:36
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 03 Thập tự giá.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 03 Thập tự giá.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+131|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-03-thap-tu-gia|2022-3-4-9:21:33
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 04 Đức tin.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+132|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-04-duc-tin|2022-3-4-9:43:53
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 05 Cầu nguyện.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+133|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-05-cau-nguyen|2022-3-4-10:6:15
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 06 Kinh Thánh.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+134|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-06-kinh-thanh|2022-3-4-10:30:50
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 07 Theo Chúa.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+135|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-07-theo-chua|2022-3-4-10:49:8
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 08 Thánh Linh.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+136|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-08-thanh-linh|2022-3-4-11:15:3
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 09 Đầy dẫy.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+137|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-09-day-day|2022-3-4-11:34:4
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 10 Ma quỷ.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+138|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-10-ma-quy|2022-3-4-12:2:34
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 11 Sự chữa lành.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+139|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-11-su-chua-lanh|2022-3-4-12:35:1
+/home/vgm/Projects/convert-replace/src/database/tmp/Alpha Youth 12 Hội Thánh.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+140|01-bai-giang.hoc-theo-chu-de.02-nhung-thac-mac-trong-doi-song.bai-hoc-alpha-2.alpha-youth-12-hoi-thanh|2022-3-4-13:7:44
+/home/vgm/Projects/convert-replace/src/database/tmp/01-Tôi có thật là con của Chúa ?.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+141|01-bai-giang.hoc-theo-chu-de.03-xac-tin-niem-tin.01-toi-co-that-la-con-cua-chua-|2022-3-4-13:49:24
+/home/vgm/Projects/convert-replace/src/database/tmp/02-Tôi có thật là con của Chúa ?.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78
+/home/vgm/Projects/convert-replace/src/database/tmp/02-Tôi có thật là con của Chúa ?.mp4 H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 1.78

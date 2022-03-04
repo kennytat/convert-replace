@@ -18,9 +18,12 @@ queue.on('idle', () => {
 // edit info here
 // const prefix = '/home/vgm/Desktop';
 const args = process.argv.slice(2)
-const startPoint = parseInt(args[0]); 
-const endPoint = parseInt(args[1]);;
+const hardware = args[0];
+const startPoint = parseInt(args[1]);
+const endPoint = parseInt(args[2]);
 const fileType = 'video' // 'audio';
+let gpuIndex = 0;
+const gpuNum = 7;
 // const itemSingle = 'videoSingle'; // 'audioSingle'
 let VGM;
 if (fileType === 'video') {
@@ -165,7 +168,7 @@ const checkMP4 = async (tmpPath, fType) => {
         });
         mp4.on('close', async (code) => {
           console.log(`Converted to mp4 done with code:`, code);
-          // await fs.unlinkSync(mp4Tmp);
+          await fs.unlinkSync(mp4Tmp);
           resolve(true);
         })
       } else {
@@ -209,8 +212,11 @@ const convertFile = async (file: string, fType: string, fURL) => {
     // fileInfo.pid = pItem.id;
     // fileInfo.dblevel = pItem.dblevel + 1;
     // console.log(fileInfo, 'start converting ffmpeg');
-    console.log(`'bash', ['ffmpeg-exec.sh', "${file}", "${outPath}", ${fType}]`);
-    const conversion = spawn('bash', ['ffmpeg-exec.sh', `"${file}"`, `"${outPath}"`, fType]);
+    gpuIndex++;
+    if (gpuIndex > gpuNum) gpuIndex = 0;
+    const bashScript = hardware === 'cpu' ? 'ffmpeg-cpu.sh' : hardware === 'gpu' ? 'ffmpeg-gpu.sh' : hardware === 'hybrid' ? 'ffmpeg-hybrid.sh' : '';
+    console.log(`'bash', [${bashScript}, "${file}", "${outPath}",  ${fType}, ${gpuIndex}]`);
+    const conversion = spawn('bash', [bashScript, `"${file}"`, `"${outPath}"`, fType]);
 
     conversion.stdout.on('data', async (data) => {
       console.log(`conversion stdout: ${data}`);
@@ -226,8 +232,8 @@ const convertFile = async (file: string, fType: string, fURL) => {
       try {
         // get iv info
         const reader = new M3U8FileParser();
-        let keyPath: string = fType === 'audio' ? `${outPath}/128p.m3u8` :`${outPath}/480p.m3u8`;
-        let upConvertedPath: string = fType === 'audio' ? `/VGMA/${fURL.replace(/\./g, '\/')}` :  `/VGMV/${fURL.replace(/\./g, '\/')}`;
+        let keyPath: string = fType === 'audio' ? `${outPath}/128p.m3u8` : `${outPath}/480p.m3u8`;
+        let upConvertedPath: string = fType === 'audio' ? `/VGMA/${fURL.replace(/\./g, '\/')}` : `/VGMV/${fURL.replace(/\./g, '\/')}`;
         const segment = await fs.readFileSync(keyPath, { encoding: 'utf-8' });
         reader.read(segment);
         const m3u8 = reader.getResult();
@@ -254,133 +260,133 @@ const convertFile = async (file: string, fType: string, fURL) => {
 }
 
 
-      // const checkFileExists = async (vName: string, pUrl, fType) => {
-      //   return new Promise((resolve) => {
-      //     // process filename
-      //     const nonVietnamese = nonAccentVietnamese(vName);
-      //     const api = `${pUrl}.${nonVietnamese.toLowerCase().replace(/[\W\_]/g, '-').replace(/-+-/g, "-")}`;
-      //     const fileUrl = api.replace(/\./g, '/');
-      //     let quality;
-      //     if (fType === 'video') quality = '480'; else quality = '128';
-      //     // // check m3u8 url
-      //     const url = `${gateway}/${fileUrl}/${quality}p.m3u8`; // if video 480p.m3u8 audio 128p.m3u8
-      //     // // check thumb url
-      //     // const url = `${gateway}/${fileUrl}/${quality}/7.jpg`;
-      //     // console.log('checkURL curl --silent --head --fail', url);
-      //     exec(`curl --silent --head --fail ${url}`, async (error, stdout, stderr) => {
-      //       if (error) {
-      //         console.log('file exist:', false);
-      //         await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${url} --fileMissing`);
-      //         resolve(false)
-      //       };
-      //       if (stderr) console.log('stderr', stderr);
-      //       if (stdout) {
-      //         console.log('file exist:', true);
-      //         await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${url} --fileExist`);
-      //         resolve(true);
-      //       };
-      //     });
-      //   });
-      // }
+// const checkFileExists = async (vName: string, pUrl, fType) => {
+//   return new Promise((resolve) => {
+//     // process filename
+//     const nonVietnamese = nonAccentVietnamese(vName);
+//     const api = `${pUrl}.${nonVietnamese.toLowerCase().replace(/[\W\_]/g, '-').replace(/-+-/g, "-")}`;
+//     const fileUrl = api.replace(/\./g, '/');
+//     let quality;
+//     if (fType === 'video') quality = '480'; else quality = '128';
+//     // // check m3u8 url
+//     const url = `${gateway}/${fileUrl}/${quality}p.m3u8`; // if video 480p.m3u8 audio 128p.m3u8
+//     // // check thumb url
+//     // const url = `${gateway}/${fileUrl}/${quality}/7.jpg`;
+//     // console.log('checkURL curl --silent --head --fail', url);
+//     exec(`curl --silent --head --fail ${url}`, async (error, stdout, stderr) => {
+//       if (error) {
+//         console.log('file exist:', false);
+//         await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${url} --fileMissing`);
+//         resolve(false)
+//       };
+//       if (stderr) console.log('stderr', stderr);
+//       if (stdout) {
+//         console.log('file exist:', true);
+//         await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${url} --fileExist`);
+//         resolve(true);
+//       };
+//     });
+//   });
+// }
 
 
-  // Rewrite vietnamese function
-  function nonAccentVietnamese(str) {
-    //     We can also use this instead of from line 11 to line 17
-    //     str = str.replace(/\u00E0|\u00E1|\u1EA1|\u1EA3|\u00E3|\u00E2|\u1EA7|\u1EA5|\u1EAD|\u1EA9|\u1EAB|\u0103|\u1EB1|\u1EAF|\u1EB7|\u1EB3|\u1EB5/g, "a");
-    //     str = str.replace(/\u00E8|\u00E9|\u1EB9|\u1EBB|\u1EBD|\u00EA|\u1EC1|\u1EBF|\u1EC7|\u1EC3|\u1EC5/g, "e");
-    //     str = str.replace(/\u00EC|\u00ED|\u1ECB|\u1EC9|\u0129/g, "i");
-    //     str = str.replace(/\u00F2|\u00F3|\u1ECD|\u1ECF|\u00F5|\u00F4|\u1ED3|\u1ED1|\u1ED9|\u1ED5|\u1ED7|\u01A1|\u1EDD|\u1EDB|\u1EE3|\u1EDF|\u1EE1/g, "o");
-    //     str = str.replace(/\u00F9|\u00FA|\u1EE5|\u1EE7|\u0169|\u01B0|\u1EEB|\u1EE9|\u1EF1|\u1EED|\u1EEF/g, "u");
-    //     str = str.replace(/\u1EF3|\u00FD|\u1EF5|\u1EF7|\u1EF9/g, "y");
-    //     str = str.replace(/\u0111/g, "d");
-    str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-    str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-    str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-    str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-    str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-    str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-    str = str.replace(/đ/g, "d");
+// Rewrite vietnamese function
+function nonAccentVietnamese(str) {
+  //     We can also use this instead of from line 11 to line 17
+  //     str = str.replace(/\u00E0|\u00E1|\u1EA1|\u1EA3|\u00E3|\u00E2|\u1EA7|\u1EA5|\u1EAD|\u1EA9|\u1EAB|\u0103|\u1EB1|\u1EAF|\u1EB7|\u1EB3|\u1EB5/g, "a");
+  //     str = str.replace(/\u00E8|\u00E9|\u1EB9|\u1EBB|\u1EBD|\u00EA|\u1EC1|\u1EBF|\u1EC7|\u1EC3|\u1EC5/g, "e");
+  //     str = str.replace(/\u00EC|\u00ED|\u1ECB|\u1EC9|\u0129/g, "i");
+  //     str = str.replace(/\u00F2|\u00F3|\u1ECD|\u1ECF|\u00F5|\u00F4|\u1ED3|\u1ED1|\u1ED9|\u1ED5|\u1ED7|\u01A1|\u1EDD|\u1EDB|\u1EE3|\u1EDF|\u1EE1/g, "o");
+  //     str = str.replace(/\u00F9|\u00FA|\u1EE5|\u1EE7|\u0169|\u01B0|\u1EEB|\u1EE9|\u1EF1|\u1EED|\u1EEF/g, "u");
+  //     str = str.replace(/\u1EF3|\u00FD|\u1EF5|\u1EF7|\u1EF9/g, "y");
+  //     str = str.replace(/\u0111/g, "d");
+  str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+  str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+  str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+  str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+  str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+  str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+  str = str.replace(/đ/g, "d");
 
-    str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
-    str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
-    str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
-    str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
-    str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
-    str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
-    str = str.replace(/Đ|Ð/g, "D");
-    // Some system encode vietnamese combining accent as individual utf-8 characters
-    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng 
-    str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
-    // str = str.replace(/-+-/g, "-"); //thay thế 2- thành 1- 
-    return str;
-  }
+  str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+  str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+  str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+  str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+  str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+  str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+  str = str.replace(/Đ|Ð/g, "D");
+  // Some system encode vietnamese combining accent as individual utf-8 characters
+  str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng 
+  str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
+  // str = str.replace(/-+-/g, "-"); //thay thế 2- thành 1- 
+  return str;
+}
 
 
 
 const processFile = async (file: string, fType: string) => {
-      return new Promise(async (resolve) => {
+  return new Promise(async (resolve) => {
 
-      const nonVietnamese = nonAccentVietnamese(file);
-        const fAPI = `${nonVietnamese.replace(/.*VGMV\//,'').toLowerCase().replace(/\//g, '.').replace(/(?!\.)[\W\_]/g, '-').replace(/-+-/g, "-").replace(/\.mp4/,'')}`;
-        const fileExist = fs.existsSync(`${apiPath}/${fAPI}.json`);
-          if (fileExist) {
-            const originalFile = file;
-            await downloadLocal(originalFile);
-            const localOriginPath = `${originalTemp}/${path.parse(originalFile).base}`;
-            if (fs.existsSync(localOriginPath)) {
-              // check and convert mp4 to m3u8
-              const fileOk = await checkMP4(localOriginPath, fType); // audio dont need check MP4
-              if (fileOk) {
-                // convert and up encrypted and database
-                let fStat: string;
-                const checkNonSilence = await execSync(`ffmpeg -i "${localOriginPath}" 2>&1 | grep Audio | awk '{print $0}' | tr -d ,`, { encoding: 'utf8' });
-                if (checkNonSilence) fStat = fType; else fStat = 'videoSilence';
-                await convertFile(localOriginPath, fStat, fAPI);
-                // remove downloaded file when done
-                await fs.unlinkSync(localOriginPath);
-                resolve(fAPI);
-              } else {
-                await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\nbroken|${file}`);
-                resolve('done');
-              }
-            } else {
-              resolve(false);
-            }
-            } else {
-                resolve(false);
-            }
-      })
-    };
+    const nonVietnamese = nonAccentVietnamese(file);
+    const fAPI = `${nonVietnamese.replace(/.*VGMV\//, '').toLowerCase().replace(/\//g, '.').replace(/(?!\.)[\W\_]/g, '-').replace(/-+-/g, "-").replace(/\.mp4/, '')}`;
+    const fileExist = fs.existsSync(`${apiPath}/${fAPI}.json`);
+    if (fileExist) {
+      const originalFile = file;
+      await downloadLocal(originalFile);
+      const localOriginPath = `${originalTemp}/${path.parse(originalFile).base}`;
+      if (fs.existsSync(localOriginPath)) {
+        // check and convert mp4 to m3u8
+        const fileOk = await checkMP4(localOriginPath, fType); // audio dont need check MP4
+        if (fileOk) {
+          // convert and up encrypted and database
+          let fStat: string;
+          const checkNonSilence = await execSync(`ffmpeg -i "${localOriginPath}" 2>&1 | grep Audio | awk '{print $0}' | tr -d ,`, { encoding: 'utf8' });
+          if (checkNonSilence) fStat = fType; else fStat = 'videoSilence';
+          await convertFile(localOriginPath, fStat, fAPI);
+          // remove downloaded file when done
+          await fs.unlinkSync(localOriginPath);
+          resolve(fAPI);
+        } else {
+          await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\nbroken|${file}`);
+          resolve('done');
+        }
+      } else {
+        resolve(false);
+      }
+    } else {
+      resolve(false);
+    }
+  })
+};
 
 
 const main = async () => {
   try {
-   // start script here
-      const raw = fs.readFileSync(txtPath, { encoding: 'utf8' });
-      if (raw) {
-        let list = raw.split('\n');
-        list.pop();
-        console.log('total files', list.length);
-        const listLength = endPoint ? endPoint : list.length;
-        for (let i = startPoint; i < listLength; i++) { // list.length or endPoint
-          (async () => {
-            queue.add(async () => {
-              const result = await processFile(list[i], fileType);
-              var today = new Date();
-              var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-              var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-              var dateTime = date+'-'+time;
+    // start script here
+    const raw = fs.readFileSync(txtPath, { encoding: 'utf8' });
+    if (raw) {
+      let list = raw.split('\n');
+      list.pop();
+      console.log('total files', list.length);
+      const listLength = endPoint ? endPoint : list.length;
+      for (let i = startPoint; i < listLength; i++) { // list.length or endPoint
+        (async () => {
+          queue.add(async () => {
+            const result = await processFile(list[i], fileType);
+            var today = new Date();
+            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date + '-' + time;
             //   console.log('processed files', i, dateTime);
-              if (result) {
-                await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${i}|${result}|${dateTime}`);
-              } else {
-                await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${i}|notfound|${list[i]}`);
-              }
-            });
-          })();
-        }
+            if (result) {
+              await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${i}|${result}|${dateTime}`);
+            } else {
+              await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${i}|notfound|${list[i]}`);
+            }
+          });
+        })();
       }
+    }
   } catch (error) {
     console.log(error);
   }
