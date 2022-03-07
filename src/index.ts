@@ -19,12 +19,12 @@ queue.on('idle', () => {
 // const prefix = '/home/vgm/Desktop';
 const args = process.argv.slice(2)
 const hardware = args[0];
-const startPoint = parseInt(args[2]);
-const endPoint = parseInt(args[3]);
-const concurrency = parseInt(args[1]);
+const concurrency = parseInt(args[1].replace('concurrency=', ''));
+const gpuNum = parseInt(args[2].replace('gpunum=', '')) || 1;
+const startPoint = parseInt(args[3].replace('start=', ''));
+const endPoint = parseInt(args[4].replace('end=', ''));
 const fileType = 'video' // 'audio';
 let gpuIndex = 0;
-const gpuNum = 7;
 // const itemSingle = 'videoSingle'; // 'audioSingle'
 let VGM;
 if (fileType === 'video') {
@@ -38,11 +38,12 @@ if (fileType === 'video') {
 const txtPath = `${__dirname}/database/${fileType}Single.txt`;
 const originalTemp = `${__dirname}/database/tmp`;
 const apiPath = `${__dirname}/database/API-convert/items/single`;
-const localOutPath = `${__dirname}/database/converted`;
+const mountedInput = `${__dirname}/database/mountedInput`;
+const localOutPath = `${__dirname}/database/mountedOutput/converted`;
+// const mountedEncrypted = `${prefix}/database/encrypted`;
+
 
 // const renamedFolder = `${prefix}/database/renamed/${VGM}/01-Bài Giảng/Mục sư Nguyễn Thỉ/Năm 2017`; // /06-Phim
-// const mountedEncrypted = `${prefix}/database/encrypted`;
-// const mountedOrigin = `${prefix}/database/origin`;
 // const gateway = `https://cdn.vgm.tv/encrypted/${VGM}`;
 // const warehousePath = 'VGM-Origin:vgmorigin/warehouse';
 
@@ -208,13 +209,14 @@ const convertFile = async (file: string, fType: string, fURL) => {
     // const nonVietnamese = nonAccentVietnamese(vName);
     // fileInfo.url = `${pItem.url}.${nonVietnamese.toLowerCase().replace(/[\W\_]/g, '-').replace(/-+-/g, "-")}`;
     // fileInfo.location = `${pItem.location}/${nonVietnamese.replace(/\s/g, '')}`;
-    const outPath = `${localOutPath}/${fURL}`;
+    const filePath = fURL.replace(/\./g, '/')
+    const outPath = `${localOutPath}/${filePath}`;
     // fileInfo.isVideo = pItem.isVideo;
     // fileInfo.pid = pItem.id;
     // fileInfo.dblevel = pItem.dblevel + 1;
     // console.log(fileInfo, 'start converting ffmpeg');
     gpuIndex++;
-    if (gpuIndex > gpuNum) gpuIndex = 0;
+    if (gpuIndex == gpuNum) gpuIndex = 0;
     const bashScript = hardware === 'cpu' ? 'ffmpeg-cpu.sh' : hardware === 'gpu' ? 'ffmpeg-gpu.sh' : hardware === 'hybrid' ? 'ffmpeg-hybrid.sh' : '';
     console.log(`'bash', [${bashScript}, "${file}", "${outPath}",  ${fType}, ${gpuIndex}]`);
     const conversion = spawn('bash', [bashScript, `"${file}"`, `"${outPath}"`, fType]);
@@ -234,7 +236,6 @@ const convertFile = async (file: string, fType: string, fURL) => {
         // get iv info
         const reader = new M3U8FileParser();
         let keyPath: string = fType === 'audio' ? `${outPath}/128p.m3u8` : `${outPath}/480p.m3u8`;
-        let upConvertedPath: string = fType === 'audio' ? `/VGMA/${fURL.replace(/\./g, '\/')}` : `/VGMV/${fURL.replace(/\./g, '\/')}`;
         const segment = await fs.readFileSync(keyPath, { encoding: 'utf-8' });
         reader.read(segment);
         const m3u8 = reader.getResult();
@@ -245,11 +246,13 @@ const convertFile = async (file: string, fType: string, fURL) => {
         const encrypted = bitwise.buffer.xor(key, code, false);
         await fs.writeFileSync(`${outPath}/key.vgmk`, encrypted, { encoding: 'binary' });
         console.log('Encrypt key file done');
-        // upload converted to s3 instant code
+        // // upload converted to s3 instant code
         // await removeOldConverted(upConvertedPath);
-        await upConverted(outPath, upConvertedPath);
-        await fs.rmdirSync(outPath, { recursive: true });
-        console.log('removed converted folder');
+        // // upload converted folder
+        // let upConvertedPath: string = fType === 'audio' ? `/VGMA/${fURL.replace(/\./g, '\/')}` : `/VGMV/${fURL.replace(/\./g, '\/')}`;
+        // await upConverted(outPath, upConvertedPath);
+        // await fs.rmdirSync(outPath, { recursive: true });
+        // console.log('removed converted folder');
         resolve('done');
 
       } catch (error) {
@@ -333,9 +336,15 @@ const processFile = async (file: string, fType: string) => {
     const fileExist = fs.existsSync(`${apiPath}/${fAPI}.json`);
     if (fileExist) {
       const originalFile = file;
-      await downloadLocal(originalFile);
-      const localOriginPath = `${originalTemp}/${path.parse(originalFile).base}`;
+
+      // // download from s3 to local
+      // await downloadLocal(originalFile);
+      // const localOriginPath = `${originalTemp}/${path.parse(originalFile).base}`;
+      // // mounted s3 to localOriginPath
+      const localOriginPath = `${mountedInput}/${file.replace(/.*VGMV\//, '')}`;
+
       if (fs.existsSync(localOriginPath)) {
+        console.log(localOriginPath);
         // check and convert mp4 to m3u8
         const fileOk = await checkMP4(localOriginPath, fType); // audio dont need check MP4
         if (fileOk) {
@@ -344,8 +353,8 @@ const processFile = async (file: string, fType: string) => {
           const checkNonSilence = await execSync(`ffmpeg -i "${localOriginPath}" 2>&1 | grep Audio | awk '{print $0}' | tr -d ,`, { encoding: 'utf8' });
           if (checkNonSilence) fStat = fType; else fStat = 'videoSilence';
           await convertFile(localOriginPath, fStat, fAPI);
-          // remove downloaded file when done
-          await fs.unlinkSync(localOriginPath);
+          // // remove downloaded file when done
+          // await fs.unlinkSync(localOriginPath);
           resolve(fAPI);
         } else {
           await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\nbroken|${file}`);
