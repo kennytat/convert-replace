@@ -22,7 +22,7 @@ fi
 ((buf360 = rate360 * 2))
 
 ffmpegVideoCPU() {
-	ffmpeg -progress pipe:1 -stats_period 0.5 -vsync 0 -i "${inPath}" \
+	ffmpeg -progress pipe:1 -v quiet -stats_period 0.5 -vsync 0 -i "${inPath}" \
 		-filter_complex \
 		"[0:v]split=4[v1][v2][v3][v4]; \
 [v1]scale=w=1920:h=1080:force_original_aspect_ratio=decrease,pad=ceil(iw/2)*2:ceil(ih/2)*2[v1out]; \
@@ -50,7 +50,7 @@ ffmpegVideoCPU() {
 }
 
 ffmpegThumbnailGPU() {
-	ffmpeg -y -ss 00:00:10 -hwaccel cuvid -c:v h264_cuvid -threads 1 -skip_frame nokey -i "${inPath}" \
+	ffmpeg -v quiet -y -ss 00:00:10 -hwaccel cuvid -c:v h264_cuvid -threads 1 -skip_frame nokey -i "${inPath}" \
 		-vf select='not(mod(n\,5))',scale_npp=1920:1080,hwdownload,format=nv12,fps=1/7 -r 0.1 -frames:v 7 -vsync vfr -q:v 2 -vcodec libwebp -lossless 0 -compression_level 6 -qscale 100 "$outPath"/1080/%01d.webp \
 		-vf select='not(mod(n\,5))',scale_npp=1280:720,hwdownload,format=nv12,fps=1/7 -r 0.1 -frames:v 7 -vsync vfr -q:v 2 -vcodec libwebp -lossless 0 -compression_level 6 -qscale 100 "$outPath"/720/%01d.webp \
 		-vf select='not(mod(n\,5))',scale_npp=854:480,hwdownload,format=nv12,fps=1/7 -r 0.1 -frames:v 7 -vsync vfr -q:v 2 -vcodec libwebp -lossless 0 -compression_level 6 -qscale 100 "$outPath"/480/%01d.webp \

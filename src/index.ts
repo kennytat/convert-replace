@@ -19,17 +19,16 @@ queue.on('idle', () => {
 // const prefix = '/home/vgm/Desktop';
 const args = process.argv.slice(2)
 const hardware = args[0];
-const concurrency = parseInt(args[1].replace('concurrency=', ''));
+const concurrency = parseInt(args[1].replace('concurrency=', '')) || 1;
 const gpuNum = parseInt(args[2].replace('gpunum=', '')) || 1;
 const startPoint = parseInt(args[3].replace('start=', ''));
 const endPoint = parseInt(args[4].replace('end=', ''));
-const fileType = 'video' // 'audio';
-let gpuIndex = 0;
+const fileType = 'video'; // 'audio';
 // const itemSingle = 'videoSingle'; // 'audioSingle'
 let VGM;
 if (fileType === 'video') {
   VGM = 'VGMV';
-  queue.concurrency = concurrency || 1;
+  queue.concurrency = concurrency;
 } else if (fileType === 'audio') {
   VGM = 'VGMA';
   queue.concurrency = 20;
@@ -153,14 +152,14 @@ const checkMP4 = async (tmpPath, fType) => {
       const jsonInfo = JSON.parse(info);
       const displayRatio = (jsonInfo.streams[0].width / jsonInfo.streams[0].height).toFixed(2);
       console.log(jsonInfo.streams[0].codec_long_name, displayRatio);
-      await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${tmpPath} ${jsonInfo.streams[0].codec_long_name} ${displayRatio}`);
+      // await fs.appendFileSync(`${__dirname}/database/${fileType}-converted-count.txt`, `\n${tmpPath} ${jsonInfo.streams[0].codec_long_name} ${displayRatio}`);
       if (jsonInfo.streams[0].codec_long_name === 'MPEG-4 part 2' || displayRatio === (4 / 3).toFixed(2)) {
         const tmpName = path.parse(tmpPath).name;
         const mp4Tmp = tmpPath.replace(tmpName, `${tmpName}1`);
         await execSync(`mv "${tmpPath}" "${mp4Tmp}"`);
         console.log(mp4Tmp, tmpPath);
-
-        const mp4 = spawn('ffmpeg', ['-vsync', '0', '-i', `${mp4Tmp}`, '-c:v', 'h264_nvenc', '-filter:v', 'pad=width=max(iw\\,ih*(16/9)):height=ow/(16/9):x=(ow-iw)/2:y=(oh-ih)/2', '-c:a', 'copy', `${tmpPath}`]);
+        const gpuIndex = Math.floor(Math.random() * gpuNum);
+        const mp4 = spawn('ffmpeg', ['-vsync', '0', '-hwaccel_device', `${gpuIndex}`, '-i', `${mp4Tmp}`, '-c:v', 'h264_nvenc', '-filter:v', 'pad=width=max(iw\\,ih*(16/9)):height=ow/(16/9):x=(ow-iw)/2:y=(oh-ih)/2', '-c:a', 'copy', `${tmpPath}`]);
         // ffmpeg -vsync 0 -i '/home/vgm/Desktop/test.mp4' -c:v h264_nvenc -c:a aac '/home/vgm/Desktop/test2.mp4'
         mp4.stdout.on('data', async (data) => {
           console.log(`converting to mp4 stdout: ${data}`);
@@ -184,7 +183,7 @@ const checkMP4 = async (tmpPath, fType) => {
   });
 }
 
-const convertFile = async (file: string, fType: string, fURL) => {
+const convertFile = async (file: string, fType: string, fURL: string) => {
   console.log('convertFile args:', file, fType, fURL);
 
   return new Promise((resolve) => {
@@ -215,11 +214,10 @@ const convertFile = async (file: string, fType: string, fURL) => {
     // fileInfo.pid = pItem.id;
     // fileInfo.dblevel = pItem.dblevel + 1;
     // console.log(fileInfo, 'start converting ffmpeg');
-    gpuIndex++;
-    if (gpuIndex == gpuNum) gpuIndex = 0;
     const bashScript = hardware === 'cpu' ? 'ffmpeg-cpu.sh' : hardware === 'gpu' ? 'ffmpeg-gpu.sh' : hardware === 'hybrid' ? 'ffmpeg-hybrid.sh' : '';
+    const gpuIndex = Math.floor(Math.random() * gpuNum);
     console.log(`'bash', [${bashScript}, "${file}", "${outPath}",  ${fType}, ${gpuIndex}]`);
-    const conversion = spawn('bash', [bashScript, `"${file}"`, `"${outPath}"`, fType]);
+    const conversion = spawn('bash', [bashScript, `"${file}"`, `"${outPath}"`, fType, gpuIndex.toString()]);
 
     conversion.stdout.on('data', async (data) => {
       console.log(`conversion stdout: ${data}`);
@@ -379,6 +377,7 @@ const main = async () => {
       list.pop();
       console.log('total files', list.length);
       const listLength = endPoint ? endPoint : list.length;
+
       for (let i = startPoint; i < listLength; i++) { // list.length or endPoint
         (async () => {
           queue.add(async () => {

@@ -69,8 +69,8 @@ mkdir -p "$outPath" && cd "$outPath" &&
 	openssl rand -hex 16 >>file.keyinfo &&
 	if [[ $fileType == 'video' || $fileType == 'videoSilence' ]]; then
 		mkdir -p "$outPath"/{1080,720,480,360,240,1080p,720p,480p,360p} &&
-			ffmpegVideoGPU &
-		ffmpegThumbnailGPU
+			ffmpegVideoGPU &&
+			ffmpegThumbnailGPU
 	else
 		mkdir -p "$outPath"/128p && ffmpegAudioCPU
 	fi &&
